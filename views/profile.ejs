@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head') %>
+<body>
+    <%- include('./partials/header') %>
+    <main class="profile">
+        <h1 class="heading">My profile</h1>
+        
+        <ul class="column main-form">
+            <li>Name: <%= user.forename %> <%= user.surname %></li>
+            <li>Role: <%= user.jobTitle %></li>
+            <li>Email: <%= user.email %></li>
+        </ul>
+    </main>
+    
+    <%- include('./partials/footer') %>
+</body>
+</html>

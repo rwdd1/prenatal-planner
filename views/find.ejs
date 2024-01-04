@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head') %>
+<body>
+    <%- include('./partials/header') %>
+    <main class="find">
+        <h1 class="heading">Find appointments</h1>
+        
+        <details>
+            <summary>Search using date/location</summary>
+            <form class="column main-form" action="/find/appointment" method="post">
+                <label for="date">Date:</label>
+                <input required id="date" name="date" type="date" value="<%= new Date().toISOString().split('T')[0] %>">
+                <label for="location">Location:</label>
+                <select required id="location" name="location">
+                    <option value="">Please select a clinic</option>
+                    <% locations.forEach( location => { %>
+                    <option value="<%= location %>"><%= location.toUpperCase() %>
+                    <% }) %>
+                </select>
+                <button class="button" type="submit">Search</button>
+            </form>
+        </details>
+        
+        <details>
+            <summary>Search using hospital number</summary>
+            <form class="column main-form" action="/find/patient" method="post">
+                <label for="mrn">Hospital number:</label>
+                <input required id="mrn" name="mrn" type="text">
+                <button class="button" type="submit">Search</button>
+            </form>
+        </details>
+    </main>
+    
+    <%- include('./partials/footer') %>
+</body>
+</html>

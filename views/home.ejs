@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head') %>
+<body>
+    <%- include('./partials/header') %>
+    <main class="home">
+        <h1 class="heading">Midwifery Appointment Scheduler</h1>
+        
+        <span>Welcome, <%= user.forename %>.</span>
+        
+        <a class="button" href="/find">Find appointment</a>
+        <a class="button" href="/add">Add appointment</a>
+    </main>
+    
+    <%- include('./partials/footer') %>
+</body>
+</html>

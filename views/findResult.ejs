@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head') %>
+<body>
+    <%- include('./partials/header') %>
+    <main class="find">
+        <h1 class="heading"><%= heading %></h1>
+        
+        <section>
+        <% if (noResult) { %>
+            <span>No appointments found.</span>
+        <% } else { %>
+            <table id="findTable">
+                <caption class="table-caption"><%= caption %></caption>
+                <thead>
+                    <tr class="table-head">
+                        <th>MRN</th>
+                        <th>Forename</th>
+                        <th>Surname</th>
+                        <th>Phone</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Gestation</th>
+                        <th>Comments</th>
+                        <th>Nurse</th>
+                        <th>Clinic</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% appointments.forEach( appointment => { %>
+                    <tr>
+                        <td><%= appointment.mrn %></td>
+                        <td><%= appointment.forename %></td>
+                        <td><%= appointment.surname %></td>
+                        <td><%= appointment.tel %></td>
+                        <td><%= appointment.appointmentDate.toISOString().split('T')[0] %></td>
+                        <td><%= appointment.appointmentTime %></td>
+                        <td class="find-td find-td-gest">
+                            <% const gest = Math.floor(appointment.gestation / 7) + " weeks " + (appointment.gestation % 7) + " days" %> 
+                            <% if ( (appointment.appointmentDate > new Date().setHours(0,0,0,0)) && (appointment.attendanceStatus.toLowerCase() !== "seen") ) { %>
+                            <form>
+                                <input name="id" type="hidden" value="<%= appointment._id %>">
+                                <input class="gest-input" required name="gestationValue" min="0" type="number" placeholder="<%= gest %>">
+                                <select class="gest-input" required name="gestationUnit">
+                                    <option value="">Days/Weeks
+                                    <option value="days">Days
+                                    <option value="weeks">Weeks
+                                </select>
+                                <button class="button find-button" type="submit">Update</button>
+                            </form>
+                            <% } else { %>
+                                <%= gest %>
+                            <% } %>
+                        </td>
+                        <td class="find-td">
+                            <% if ( (appointment.appointmentDate > new Date().setHours(0,0,0,0)) && (appointment.attendanceStatus.toLowerCase() !== "seen") ) { %>
+                            <form>
+                                <input name="id" type="hidden" value="<%= appointment._id %>">
+                                <textarea required name="comment" placeholder="<%= appointment.comment %>"></textarea>
+                                <button class="button find-button" type="submit">Update</button>
+                            </form>
+                            <% } else { %>
+                            <%= appointment.comment %>
+                            <% } %>
+                        </td>
+                        <td><%= appointment.seenBy %></td>
+                        <td><%= appointment.location %></td>
+                        <td class="find-td">
+                            <% if ( (appointment.appointmentDate > new Date().setHours(0,0,0,0)) && (appointment.attendanceStatus.toLowerCase() !== "seen") ) { %>
+                            <form>
+                                <input name="id" type="hidden" value="<%= appointment._id %>">
+                                <select required name="status">
+                                    <option value=""><%= appointment.attendanceStatus %>
+                                    <option value="Seen">Seen
+                                    <option value="Rescheduled">Rescheduled
+                                    <option value="DNA">DNA
+                                    <option value="Cancelled (staff)">Cancelled (staff)
+                                    <option value="Cancelled (patient)">Cancelled (patient)
+                                </select>
+                                <button class="button find-button" type="submit">Update</button>
+                            </form>
+                            <% } else { %>
+                            <%= appointment.attendanceStatus %>
+                            <% } %>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+        </section>
+    </main>
+    
+    <%- include('./partials/footer') %>
+</body>
+</html>

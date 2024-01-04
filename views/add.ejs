@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head') %>
+<body>
+    <%- include('./partials/header') %>
+    <main class="add">
+        <h1 class="heading">Add appointments</h1>
+            
+            <% if (alerts.errors.length || alerts.success.length) { %> 
+            <ul class="alert">
+                <% if (alerts.errors.length) { %> 
+                    <% alerts.errors.forEach( error => { %>
+                <li class="error italicised"><%= error %></li>
+                    <% }) %> 
+                <% } %>
+                <% if (alerts.success.length) { %>
+                    <% alerts.success.forEach( success => { %> 
+                <li class="success italicised"><%= success %></li>
+                <% }) %> 
+                <% } %>
+            </ul>
+            <% } %> 
+            
+            <details>
+                <summary>Add an appointment</summary>
+                <form class="column main-form" action="/add/single" method="post">
+                    <label for="mrn">Hospital number:</label>
+                    <input required id="mrn" name="mrn" type="text">
+                    <label for="forename">Forename:</label>
+                    <input required id="forename" name="forename" type="text">
+                    <label for="surname">Surname:</label>
+                    <input required id="surname" name="surname" type="text">
+                    <label for="tel">Telephone:</label>
+                    <input id="tel" name="tel" type="number">
+                    <label for="date">Date:</label>
+                    <input required id="date" name="date" type="date" value="<%= new Date().toISOString().split('T')[0] %>">
+                    <label for="time">Time:</label>
+                    <select required id="time" name="time">
+                        <option value="">Please select a time</option>
+                        <% times.forEach( time => { %>
+                        <option value="<%= time %>"><%= time %>
+                        <% }) %>
+                    </select>
+                    <label for="location">Location:</label>
+                    <select required id="location" name="location">
+                        <option value="">Please select a clinic
+                        <% locations.forEach( location => { %>
+                        <option value="<%= location %>"><%= location.toUpperCase() %>
+                        <% }) %>
+                    </select>
+                    <button class="button" type="submit">Add</button>
+                </form>
+            </details>
+            
+            <details>
+                <summary>Add multiple appointments</summary>
+                <form class="column main-form add-multiple" action="/add/multiple" method="post">
+                    <% times.forEach( (time, index) => { %>
+                    <fieldset class="add-multiple-fieldset">
+                        <legend><%= time %> slot</legend>
+                        <label for="mrn<%= index %>">Hospital number:</label>
+                        <input id="mrn<%= index %>" name="mrn<%= index %>" type="text">
+                        <label for="forename<%= index %>">Forename:</label>
+                        <input id="forename<%= index %>" name="forename<%= index %>" type="text">
+                        <label for="surname<%= index %>">Surname:</label>
+                        <input id="surname<%= index %>" name="surname<%= index %>" type="text">
+                        <label for="tel<%= index %>">Telephone:</label>
+                        <input id="tel<%= index %>" name="tel<%= index %>" type="number">
+                        <label for="date<%= index %>">Date:</label>
+                        <input id="date<%= index %>" name="date<%= index %>" type="date" value="<%= new Date().toISOString().split('T')[0] %>">
+                        <label for="time<%= index %>">Time:</label>
+                        <input id="time<%= index %>" name="time<%= index %>" type="time" value="<%= time %>">
+                        <label for="location<%= index %>">Location:</label>
+                        <select id="location<%= index %>" name="location<%= index %>">
+                            <option value="">Please select a clinic
+                            <% locations.forEach( location => { %>
+                            <option value="<%= location %>"><%= location.toUpperCase() %>
+                            <% }) %>
+                        </select>
+                    </fieldset>
+                    <% }) %>
+                    <button class="button" type="submit">Add</button>
+                </form>
+            </details>
+    </main>
+    
+    <%- include('./partials/footer') %>
+</body>
+</html>
